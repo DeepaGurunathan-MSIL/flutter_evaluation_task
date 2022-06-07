@@ -53,7 +53,7 @@ class ConfirmationState extends State<Confirmation> {
                     fontSize: 15
                   ),),
                   onTap: ()=>{
-                  BaseNavigator(context,route:'/GenerateOTP').navigatorPushAndRemoveUntil()
+                  BaseNavigator(context,route:Constants.generateOtpRoute).navigatorPushAndRemoveUntil()
                   },
                 ),
               ],

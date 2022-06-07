@@ -49,3 +49,19 @@ class WatchlistErrorState extends ApiCallState {
   final dynamic error;
   WatchlistErrorState({required this.error});
 }
+
+// Generate OTP Validation
+
+class GenerateOTPMobileErrorState extends ApiCallState {}
+
+class GenerateOTPCheckboxErrorState extends ApiCallState {}
+
+class GenerateOTPConditionDoneState extends ApiCallState {}
+
+// Login OTP Validation
+
+class LoginOtpValidationDone extends ApiCallState {}
+
+class LoginOtpValidationError extends ApiCallState {}
+
+

@@ -39,26 +39,31 @@ class WatchlistState extends State<Watchlist> {
     _symbols = state.watchlistData.response?.data?.symbols;
      return Padding(
        padding: const EdgeInsets.only(top: 40),
-       child: Column(
-         children:  [
-            const Padding(
-              padding: EdgeInsets.only(bottom: 8.0),
-              child: Center(child: Text(Constants.msilWatchlist,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 17
-              ),)),
-            ),
-           Expanded(
-             child: Listview(
-                 symbols: _symbols!),
-           )
-         ],
+       child: RefreshIndicator(
+         onRefresh: () async => _apiCallBloc.add(FetchWatchlistEvent()),
+         child: Column(
+           children:  [
+              const Padding(
+                padding: EdgeInsets.only(bottom: 8.0),
+                child: Center(child: Text(Constants.msilWatchlist,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17
+                ),)),
+              ),
+             Expanded(
+               child: Listview(
+                   symbols: _symbols!),
+             )
+           ],
+         ),
        ),
      );}
       if (state is WatchlistErrorState) {
       final error = state.error;
-      return Center(child: Text(error.toString()));
+      return RefreshIndicator(
+        onRefresh: () async => _apiCallBloc.add(FetchWatchlistEvent()),
+          child: Center(child: Text(error.toString())));
       }
       return const Center(child: CircularProgressIndicator());
       })

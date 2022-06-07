@@ -20,8 +20,45 @@ class ApiCallBloc extends Bloc<ApiCallEvent,ApiCallState>
         }else if(event is FetchLoginResponseEvent)
       {
         await _getLoginResponse(emit,event);
+      } else if (event is CheckGenerateOTPConditionEvent)
+        {
+          await _getOtpConditionCheck(emit,event);
+        } else if (event is CheckLoginOtpEvent)
+      {
+        await _getLoginOTPValidation(emit,event);
       }
     });
+  }
+
+  // Generate OTP Validation
+
+  Future<void> _getOtpConditionCheck(Emitter<ApiCallState> emit,CheckGenerateOTPConditionEvent checkGenerateOTPConditionEvent)
+  async {
+
+    if(checkGenerateOTPConditionEvent.phoneNumber.length == 10 && checkGenerateOTPConditionEvent.isChecked)
+    {
+      emit(GenerateOTPConditionDoneState());
+    } else if(checkGenerateOTPConditionEvent.phoneNumber.length<10)
+    {
+      emit(GenerateOTPMobileErrorState());
+    } else if(!checkGenerateOTPConditionEvent.isChecked)
+    {
+      emit(GenerateOTPCheckboxErrorState());
+    }
+  }
+
+  // Login OTP Validation
+
+  Future<void> _getLoginOTPValidation(Emitter<ApiCallState> emit,CheckLoginOtpEvent checkLoginOtpEvent)
+  async {
+
+    if(checkLoginOtpEvent.otp.length == 4)
+    {
+      emit(LoginOtpValidationDone());
+    }
+    else {
+      emit(LoginOtpValidationError());
+    }
   }
 
   // OTP

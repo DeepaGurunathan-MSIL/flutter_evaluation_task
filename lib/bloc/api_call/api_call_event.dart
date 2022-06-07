@@ -12,3 +12,14 @@ class FetchLoginResponseEvent extends ApiCallEvent {
 }
 
 class FetchWatchlistEvent extends ApiCallEvent {}
+
+class CheckGenerateOTPConditionEvent extends ApiCallEvent {
+  late String phoneNumber;
+  late bool isChecked;
+  CheckGenerateOTPConditionEvent(this.phoneNumber,this.isChecked);
+}
+
+class CheckLoginOtpEvent extends ApiCallEvent {
+  late String otp;
+  CheckLoginOtpEvent(this.otp);
+}

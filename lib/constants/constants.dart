@@ -22,6 +22,12 @@ class Constants {
   static const String logout = "LogOut";
   static const String nineOne = "+91";
 
+  // Routes
+  static const String generateOtpRoute = "GenerateOTP";
+  static const String loginRoute = "Login";
+  static const String watchlistRoute = "WatchList";
+  static const String confirmationRoute = "Confirmation";
+
   // Error Message
   static const String networkError = "Network Error";
   static const String incorrectMobileNumber = "Incorrect Mobile Number";

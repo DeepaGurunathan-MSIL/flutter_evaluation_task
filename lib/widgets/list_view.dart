@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_evaluation_task/constants/constants.dart';
 import 'package:flutter_evaluation_task/model/arguments.dart';
 import 'package:flutter_evaluation_task/model/watchlist.dart';
+import 'package:intl/intl.dart';
 
 import 'base_navigator.dart';
 
@@ -18,13 +19,13 @@ final List<Symbols> symbols;
         itemCount: symbols.length,
         itemBuilder: (context, index) {
           Symbols sym = symbols[index];
-          return _buildExpandableTile(context,sym);
+          return _buildWatchlistExpandableTile(context,sym);
         }, separatorBuilder: (BuildContext context, int index) {
           return const Divider();
     },);
   }
 
-  ExpansionTile _buildExpandableTile(BuildContext context,Symbols sym) {
+  ExpansionTile _buildWatchlistExpandableTile(BuildContext context,Symbols sym) {
     return ExpansionTile(
       collapsedTextColor: Colors.black,
       textColor: Colors.black,
@@ -49,7 +50,7 @@ final List<Symbols> symbols;
                     ),),
                    SizedBox(
                      width: 100,
-                     child: Text(sym.excToken.toString(),
+                     child: Text(commaSeparator(sym),
                        textAlign: TextAlign.end,
                        style: const TextStyle(
                        color: Colors.red,
@@ -109,7 +110,7 @@ final List<Symbols> symbols;
               )
               ),
                   onPressed: (){
-              BaseNavigator(context,route:'/Confirmation',arguments: Arguments(symbols: sym)).navigatorPush();
+              BaseNavigator(context,route:Constants.confirmationRoute,arguments: Arguments(symbols: sym)).navigatorPush();
               },
                   child: const Text(Constants.buy)),
             ),
@@ -126,7 +127,7 @@ final List<Symbols> symbols;
                     )
                 ),
                   onPressed: (){
-                    BaseNavigator(context,route:'/Confirmation',arguments: Arguments(symbols:sym)).navigatorPush();
+                    BaseNavigator(context,route:Constants.confirmationRoute,arguments: Arguments(symbols:sym)).navigatorPush();
                   },
                   child: const Text(Constants.sell)),
             )
@@ -134,5 +135,11 @@ final List<Symbols> symbols;
         )
       ],
       );
+  }
+
+  String commaSeparator(Symbols sym) {
+    NumberFormat numberFormat = NumberFormat.decimalPattern('hi');
+    numberFormat.format(int.parse(sym.excToken.toString()));
+    return numberFormat.format(int.parse(sym.excToken.toString()));
   }
 }

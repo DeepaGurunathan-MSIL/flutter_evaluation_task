@@ -90,6 +90,7 @@ class _GenerateOTPState extends State<GenerateOTP> {
                           child: TextField(
                             controller: _mobileNoController,
                             inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp("[0-9]")),
                               LengthLimitingTextInputFormatter(10),
                             ],
                             keyboardType: TextInputType.number,
@@ -156,7 +157,7 @@ class _GenerateOTPState extends State<GenerateOTP> {
                       )
                   ),
                     onPressed:() {
-                      _onButtonClick();
+                    _apiCallBloc.add(CheckGenerateOTPConditionEvent(_mobileNoController.text.toString(),isChecked));
                     }, child: const Text(Constants.generateOtp,
                 style: TextStyle(
                   fontSize: 20
@@ -169,19 +170,6 @@ class _GenerateOTPState extends State<GenerateOTP> {
     })
     );
   }
-  void _onButtonClick ()
-  {
-    if(_mobileNoController.text.toString().length == 10 && isChecked)
-    {
-      _apiCallBloc.add(FetchOTPResponseEvent(Constants.nineOne+_mobileNoController.text.toString()));
-    } else if(_mobileNoController.text.toString().length<10)
-    {
-      ScaffoldMessenger.of(context).showSnackBar(Utils().snackBar(Constants.incorrectMobileNumber));
-    } else if(!isChecked)
-    {
-      ScaffoldMessenger.of(context).showSnackBar(Utils().snackBar(Constants.termsErrorMessage));
-    }
-  }
 
   void _apiEventCall(ApiCallBloc _apiCallBloc,BuildContext context)
   {
@@ -191,7 +179,7 @@ class _GenerateOTPState extends State<GenerateOTP> {
           ScaffoldMessenger.of(context)
               .showSnackBar(Utils().snackBar(Constants.otpSent));
           BaseNavigator(context,
-              route: '/Login',
+              route: Constants.loginRoute,
               arguments: Arguments(
                   stringArguments: Constants.nineOne +
                       _mobileNoController.text.toString()))
@@ -204,6 +192,13 @@ class _GenerateOTPState extends State<GenerateOTP> {
       else if(state is OTPErrorState)
       {
         ScaffoldMessenger.of(context).showSnackBar(Utils().snackBar(Constants.networkError));
+      }
+      else if(state is GenerateOTPConditionDoneState){
+        _apiCallBloc.add(FetchOTPResponseEvent(Constants.nineOne+_mobileNoController.text.toString()));
+      }else if(state is GenerateOTPMobileErrorState){
+        ScaffoldMessenger.of(context).showSnackBar(Utils().snackBar(Constants.incorrectMobileNumber));
+      }else if(state is GenerateOTPCheckboxErrorState){
+        ScaffoldMessenger.of(context).showSnackBar(Utils().snackBar(Constants.termsErrorMessage));
       }
     });
   }

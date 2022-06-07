@@ -7,6 +7,8 @@ import 'package:flutter_evaluation_task/screens/login.dart';
 import 'package:flutter_evaluation_task/screens/generate_otp.dart';
 import 'package:flutter_evaluation_task/screens/watch_list.dart';
 
+import 'constants/constants.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -20,19 +22,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Named Route Navigation',
       routes: {
-        '/GenerateOTP': (context) =>  BlocProvider<ApiCallBloc>(
+        Constants.generateOtpRoute : (context) =>  BlocProvider<ApiCallBloc>(
           create: (BuildContext context) => ApiCallBloc(),
           child: const GenerateOTP(),
         ),
-        '/Login': (context) =>  BlocProvider<ApiCallBloc>(
+        Constants.loginRoute: (context) =>  BlocProvider<ApiCallBloc>(
           create: (BuildContext context) => ApiCallBloc(),
           child: const Login(),
         ),
-        '/WatchList': (context) =>  BlocProvider<ApiCallBloc>(
+        Constants.watchlistRoute: (context) =>  BlocProvider<ApiCallBloc>(
           create: (BuildContext context) => ApiCallBloc(),
           child: const Watchlist(),
         ),
-        '/Confirmation': (context) =>  BlocProvider<UpdateStatusBloc>(
+        Constants.confirmationRoute: (context) =>  BlocProvider<UpdateStatusBloc>(
     create: (BuildContext context) => UpdateStatusBloc(),
     child: const Confirmation(),
     ),

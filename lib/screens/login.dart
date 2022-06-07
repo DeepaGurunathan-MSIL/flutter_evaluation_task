@@ -106,12 +106,8 @@ class _LoginState extends State<Login> {
 
   void call(){
     _otp = _fieldOne.text + _fieldTwo.text + _fieldThree.text + _fieldFour.text;
-    if(_otp.length == 4) {
-      _apiCallBloc.add(FetchLoginResponseEvent(_otp, _mobileNumber!));
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(Utils().snackBar(Constants.enterOtp));
-    }
+
+      _apiCallBloc.add(CheckLoginOtpEvent(_otp));
   }
 
   void _apiEventCall(ApiCallBloc _apiCallBloc,BuildContext context)
@@ -135,7 +131,7 @@ class _LoginState extends State<Login> {
         if(state.loginResponse.response!.infoID == '0') {
           ScaffoldMessenger.of(context).showSnackBar(
               Utils().snackBar(Constants.loginSuccess));
-          BaseNavigator(context, route: '/WatchList').navigatorPushAndRemoveUntil();
+          BaseNavigator(context, route: Constants.watchlistRoute).navigatorPushAndRemoveUntil();
         } else{
           ScaffoldMessenger.of(context)
               .showSnackBar(Utils().snackBar(Constants.serverError));
@@ -143,6 +139,14 @@ class _LoginState extends State<Login> {
       }
       else if(state is LoginErrorState){
         ScaffoldMessenger.of(context).showSnackBar(Utils().snackBar(Constants.networkError));
+      }
+      else if(state is LoginOtpValidationDone)
+        {
+          _apiCallBloc.add(FetchLoginResponseEvent(_otp, _mobileNumber!));
+        } else if(state is LoginOtpValidationError)
+      {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(Utils().snackBar(Constants.enterOtp));
       }
     });
   }
